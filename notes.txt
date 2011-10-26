@@ -1,0 +1,77 @@
+Outline
+- Conventions
+- Methods
+
+Feedback: frankw@uw.edu
+
+Meetups:
+Wed, seattle.beerandcode.org, 7pm-11pm
+Mon, Ruby at Racer, 7pm-9pm
+
+h1. Conventions
+h2. Reporting Errors
+- Use gists for you error messages
+- Include your OS, Ruby version, and gems
+
+h2. Spaces
+- 2 spaces indent, spaces not tabs
+
+h2. Naming Conventions
+- variable_name
+- method_name
+- ClassName
+
+h2. Folder Structure
+project
+	lib/
+	spec/ or test/
+	Gemfile
+	Guardfile
+	Rakefile
+	README.md
+	
+h1. respond_to? vs kind_of?
+Avoid kind_of? because you're specifying WHAT it should be, not how it should behave. Respond_to? allows you to test what messages the object responds to.
+
+h1. Handy tools
+Gleebox: Nice tool for finding on a page, Chrome, Safari
+Hub: nice wrapper for git
+
+h1. Git
+h2. Handy commands
+git clean -df   # gets rid of all untracked changes
+git checkout -- <filename>   # reverts the file to what is checked in.
+
+h2. Git branching
+Nothing I don't already now about 'git branch' and 'git checkout'
+
+h1. Methods
+def display_superheroes(heroes=nil)
+	Array(heroes).each
+	# using Array() guards against nil input.
+	...
+	end
+end
+
+h2. splat operator
+def display_superheroes(*heroes)
+	# heroes will be an array of all the values passed in.
+	heroes.each do
+	..
+	end
+end
+# allows the following
+display_superheroes him, her, them, us
+
+h2. Hashes as params
+putting a hash methods params behaves kind of like the splat
+find_superheroes :origin => 'Krypton', :nemesis => joker
+
+def find_superheroes(criteria)
+	criteria.map do |key, value|
+		SuperHeroes.find_all do |hero|
+			hero[key] == value
+		end
+	end.flatten.uniq
+end
+# notice the operations on the "end"
