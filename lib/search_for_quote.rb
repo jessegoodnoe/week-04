@@ -8,19 +8,22 @@
 # @see Programing Ruby, Chapter 6 
 #
 def search_for_quote(params = {})
-  quotes = []
+  quotes = all_quotes(params.delete(:file))
   
-  # There must be a more lambda way to do this, it's not coming to me.
-  criteria = /.*/
-  criteria = /#{params[:include]}/     if params.has_key? :include
-  criteria = /^#{params[:start_with]}/ if params.has_key? :start_with
-  criteria = /#{params[:end_with]}$/   if params.has_key? :end_with
-
-  file_name = params[:file]
-  
-  if File.exist? file_name
-    quotes = File.readlines(file_name).select { |line| line.chomp! =~ criteria }
+  params.each do |method, param|
+    quotes = quotes.find_all do |quote|
+      quote.send("#{method}?", param)
+    end
   end
-  
+
+    # Simple way.
+    # criteria = /.*/
+    # criteria = /#{params[:include]}/     if params.has_key? :include
+    # criteria = /^#{params[:start_with]}/ if params.has_key? :start_with
+    # criteria = /#{params[:end_with]}$/   if params.has_key? :end_with
+    # if File.exist? file_name
+    #   quotes = File.readlines(file_name).select { |line| line.chomp! =~ criteria }
+    # end
+
   quotes
 end
